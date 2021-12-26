@@ -1,0 +1,5 @@
+<p *ngIf="loading; else app">Loading...</p>
+
+<ng-template #app>
+  <textarea #textarea (input)="saveText(textarea.value)">{{text}}</textarea>
+</ng-template>

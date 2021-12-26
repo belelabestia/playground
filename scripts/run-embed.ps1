@@ -1,0 +1,1 @@
+docker compose --file .\docker\docker-compose.embed.yml --project-directory . --project-name playground-embed up --build

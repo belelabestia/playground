@@ -1,0 +1,10 @@
+{
+  "/api": {
+    "target": "http://playground-api:5255",
+    "secure": false,
+    "pathRewrite": {
+      "^/api": ""
+    },
+    "logLevel": "debug"
+  }
+}

@@ -1,0 +1,52 @@
+# This one creates a dev env on a stack of containers
+# Couldn't manage to attach the .NET Core debugger
+# Requires proxy.conf.json to forward to "playground-api" instead of "localhost"
+# and connection string to point to Host "playground-db" instead of "localhost"
+
+services:
+  api:
+    image: mcr.microsoft.com/dotnet/sdk
+    working_dir: /repo
+    entrypoint:
+      - dotnet
+      - watch
+      - run
+    environment:
+      DOTNET_USE_POLLING_FILE_WATCHER: true
+    container_name: playground-api
+    networks:
+      - playground-network
+    volumes:
+      - type: bind
+        source: PlaygroundApi
+        target: /repo
+    depends_on:
+      - db
+    ports:
+      - "5255:5255"
+  db:
+    image: postgres
+    container_name: playground-db
+    environment:
+      POSTGRES_PASSWORD: pwd1234
+    networks:
+      - playground-network
+    ports:
+      - "5432:5432"
+  site:
+    image: node
+    working_dir: /repo
+    entrypoint:
+      - npm
+      - start
+    container_name: playground-site
+    ports:
+      - "4200:4200"
+    networks:
+      - playground-network
+    volumes:
+      - type: bind
+        source: playground-app
+        target: /repo
+networks:
+  playground-network: {}
