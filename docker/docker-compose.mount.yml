@@ -37,7 +37,7 @@ services:
         source: dist/app
         target: /site
       - type: bind
-        source: playground-site.conf
+        source: docker/playground-site.conf
         target: /etc/nginx/conf.d/default.conf
 networks:
   playground-network: {}

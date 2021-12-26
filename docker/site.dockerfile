@@ -7,4 +7,4 @@ RUN npm run build
 FROM nginx AS prod
 WORKDIR /site
 COPY --from=builder /dist/app .
-COPY playground-site.conf /etc/nginx/conf.d/default.conf
+COPY docker/playground-site.conf /etc/nginx/conf.d/default.conf
