@@ -1,8 +1,3 @@
-# This one creates a dev env on a stack of containers
-# Couldn't manage to attach the .NET Core debugger
-# Requires proxy.conf.json to forward to "playground-api" instead of "localhost"
-# and connection string to point to Host "playground-db" instead of "localhost"
-
 services:
   api:
     image: mcr.microsoft.com/dotnet/sdk

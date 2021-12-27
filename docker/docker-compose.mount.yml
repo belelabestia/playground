@@ -1,7 +1,3 @@
-# This creates a working stack dependent on local published files
-# Requires frontend and backend applications to be manually published before run
-# Uses /dist/api and /dist/app folders as mounted (type=bind) volumes
-
 services:
   api:
     image: mcr.microsoft.com/dotnet/aspnet
