@@ -30,8 +30,8 @@ Utilizzo il termine _app_ per indicare la web app statica (il _frontend_), e _si
 
 ## Docker
 
-La configurazione fa uso di `Dockerfile` e `docker compose` per compilare lo stack.  
-Sono disponibili diverse modalità di composizione dello stack; i diversi file di configurazione e script si trovano nella cartella `docker`.
+La configurazione fa uso di `Dockerfile` e `docker compose` per compilare le immagini e lanciare lo stack.  
+Sono disponibili diverse modalità di composizione ed esecuzione dello stack; i diversi file di configurazione e script si trovano nella cartella `docker`.
 
 ### Modalità _dev_
 
@@ -84,3 +84,35 @@ I compilati vengono generati a loro volta usando dei container, quindi non ne re
 
 Questo script lancia localmente i comandi di pubblicazione, poi genera uno stack di nome `playground-embed`, identico a quello generato in modalità _mount_.  
 La differenza è che in questo caso i container sono completamente _self-contained_, cioè non dipendono dal file system della macchina ospite per accedere agli eseguibili.
+
+### Modalità _prod_ (_mount_ e _volume_) e deploy
+
+Per lanciare lo stack in ambiente di produzione è necessario esportare tutte le immagini che lo compongono e lanciare un `docker compose` in produzione con le configurazioni `docker-compose.prod.yml`, che anziché costruire le immagini a partire dal repository, lancia uno stack a partire da quelle esportate.
+
+Sulla macchina di sviluppo:
+
+```
+.\scripts\export-embed.ps1
+```
+
+Sulla macchina di produzione, dopo aver copiato le cartelle `docker` (servono solo `docker-compose.prod.yml` e `playground-site.conf`), `scripts` (serve solo `run-prod.ps1`) e `images`, si possono eseguire tre script:
+
+Questo lancia le immagini _self-contained_ senza costruirle, quindi può essere usato in assenza dei sorgenti e dei _dockerfile_:
+
+```
+.\scripts\run-prod.ps1
+```
+
+Questo a differenza del precedente _monta_ sulla cartella `data` i file di lavoro (e dunque i db) di _PostgreSQL_:
+
+```
+.\scripts\run-prod-mount.ps1
+```
+
+Questo invece associa all'immagine `postgres` un _volume_ docker di nome `playground-data`:
+
+```
+.\scripts\run-prod-volume.ps1
+```
+
+Gli ultimi due script (e relative configurazioni) sono molto utili per rendere realmente _persistenti_ i dati su db, anche se il container del db viene eliminato o ricreato.

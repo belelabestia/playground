@@ -1,0 +1,24 @@
+services:
+  api:
+    image: playground-api
+    container_name: playground-api
+    networks:
+      - playground-network
+    depends_on:
+      - db
+  db:
+    image: postgres
+    container_name: playground-db
+    environment:
+      POSTGRES_PASSWORD: pwd1234
+    networks:
+      - playground-network
+  site:
+    image: playground-site
+    container_name: playground-site
+    ports:
+      - "80:80"
+    networks:
+      - playground-network
+networks:
+  playground-network: {}
